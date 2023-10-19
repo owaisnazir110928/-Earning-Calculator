@@ -196,7 +196,6 @@ const Earning = () => {
                 <h2>{video.title}</h2>
                 <p>Views: {video.views}</p>
                 <p>Likes: {video.likes}</p>
-                <p>Dislikes: {video.dislikes}</p>
                 <p>Comments: {video.comments}</p>
                 <p>
                   Earning:{" "}
