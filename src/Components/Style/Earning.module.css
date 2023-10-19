@@ -135,3 +135,90 @@
     line-height: 28px;
     color: #FFFFFFB2;
 }
+
+.tableContainer,
+.tableHead,
+.tableBody,
+.rank,
+.videoTitle,
+.videoViews,
+.videoLikes,
+.videoComments,
+.videoDate,
+.estimation,
+.midThumb {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tableContainer {
+    flex-direction: column;
+    width: 100%;
+}
+
+.tableHead {
+    background-color: #1E1E1E;
+    width: 1079px;
+    height: 81px;
+    margin-bottom: 2px;
+    text-align: center;
+}
+
+.tableHead th {
+    background-color: #1E1E1E;
+}
+
+.tableBody td {
+    background-color: #1E1E1E80;
+    text-align: center;
+    color: #FFFFFFCC;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19px;
+    letter-spacing: 0em;
+}
+
+.tableBody {
+    background-color: #1E1E1E80;
+    width: 1079px;
+    height: 81px;
+    margin-bottom: 2px;
+    text-align: center;
+}
+
+.rank {
+    width: 90px;
+    height: 100%;
+}
+
+.tableHead .videoTitle {
+    align-items: center;
+}
+
+.videoTitle {
+    width: 230px;
+    padding: 0px 20px;
+    height: 45%;
+    align-items: baseline;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.midThumb {
+    width: 130px;
+    height: 100%;
+}
+
+.videoViews,
+.videoLikes,
+.videoComments {
+    width: 110px;
+    height: 100%;
+}
+
+.videoDate,
+.estimation {
+    width: 130px;
+    height: 100%;
+}

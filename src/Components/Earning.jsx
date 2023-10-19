@@ -5,7 +5,7 @@ import likeSvg from "../assets/likes.svg";
 import commentSvg from "../assets/comments.svg";
 import { useParams } from "react-router-dom";
 
-const API_KEY = "AIzaSyBGlfANrVugCzArdOMphZvr1hcp7WyVSj4";
+const API_KEY = "AIzaSyAwWGDBtulgkwYaUZqXM4puMowDbDacWuY";
 const Earning = () => {
   const { url } = useParams();
   const [loading, setLoading] = useState(0);
@@ -98,12 +98,19 @@ const Earning = () => {
         const videoPromises = data.items.map(async (video) => {
           const videoId = video.id.videoId;
           const statistics = await fetchVideoStatisticsPopular(videoId);
+          const date2 = new Date(video.snippet.publishedAt);
+
           return {
             title: video.snippet.title,
             views: statistics.viewCount,
             likes: statistics.likeCount,
-            dislikes: statistics.dislikeCount,
+            date: date2.toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            }),
             comments: statistics.commentCount,
+            imgUrl: video.snippet.thumbnails.high.url,
             earnings:
               Math.min(statistics.viewCount) +
               10 * statistics.commentCount +
@@ -143,71 +150,85 @@ const Earning = () => {
 
   return (
     <div className={styles.container}>
-      {loading < 100 ? (
-        <center>
-          <h2>Loading... {loading}</h2>
-        </center>
-      ) : (
-        <div className={styles.container}>
-          <div className={styles.upperPart}>
-            {/* Video Details */}
-            <div className={styles.header}>
-              {/* Left Section */}
-              <div className={styles.headerLeft}>
-                <div className={styles.img}>
-                  <img
-                    width="256"
-                    height="144"
-                    src={videoData.imgUrl}
-                    alt="Video Thumbnail"
-                  />
-                  <p>Uploaded on - {videoData.date}</p>
-                </div>
-                <div className={styles.details}>
-                  <p className={styles.title}>{videoData.title}</p>
-                  <p className={styles.stats}>
-                    <img src={viewSvg} alt="Views Icon" />
-                    <span>{videoData.views}</span>
-                  </p>
-                  <p className={styles.stats}>
-                    <img src={likeSvg} alt="Likes Icon" />
-                    <span>{videoData.likes}</span>
-                  </p>
-                  <p className={styles.stats}>
-                    <img src={commentSvg} alt="Comments Icon" />
-                    <span>{videoData.comments}</span>
-                  </p>
-                </div>
+      <div className={styles.container}>
+        <div className={styles.upperPart}>
+          <div className={styles.header}>
+            <div className={styles.headerLeft}>
+              <div className={styles.img}>
+                <img
+                  width="256"
+                  height="144"
+                  src={videoData.imgUrl}
+                  alt="Video Thumbnail"
+                />
+                <p>Uploaded on - {videoData.date}</p>
               </div>
-              {/* Right Section */}
-              <div className={styles.headerRight}>
-                <span>₹{videoData.earnings.toLocaleString("en-IN")}</span>
-                <button className={styles.button}>Check How?</button>
-              </div>
-            </div>
-          </div>
-          <div className={styles.belowPart}>
-            <h3>Other Videos Potentials</h3>
-          </div>
-          <h1>Popular Videos and Statistics</h1>
-          <div className="videos-container">
-            {videos.map((video, index) => (
-              <div key={index} className="video-card">
-                <h2>{video.title}</h2>
-                <p>Views: {video.views}</p>
-                <p>Likes: {video.likes}</p>
-                <p>Comments: {video.comments}</p>
-                <p>
-                  Earning:{" "}
-                  {Math.min(video.views) +
-                    10 * video.comments +
-                    5 * video.likes}
+              <div className={styles.details}>
+                <p className={styles.title}>{videoData.title}</p>
+                <p className={styles.stats}>
+                  <img src={viewSvg} alt="Views Icon" />
+                  <span>{videoData.views}</span>
+                </p>
+                <p className={styles.stats}>
+                  <img src={likeSvg} alt="Likes Icon" />
+                  <span>{videoData.likes}</span>
+                </p>
+                <p className={styles.stats}>
+                  <img src={commentSvg} alt="Comments Icon" />
+                  <span>{videoData.comments}</span>
                 </p>
               </div>
-            ))}
+            </div>
+            <div className={styles.headerRight}>
+              <span>₹{videoData.earnings.toLocaleString("en-IN")}</span>
+              <button className={styles.button}>Check How?</button>
+            </div>
           </div>
         </div>
-      )}
+        <div className={styles.belowPart}>
+          <h3>Other Videos Potentials</h3>
+          <div className={styles.tableContainer}>
+            <table className={styles.table}>
+              <thead>
+                <tr className={styles.tableHead}>
+                  <th className={styles.rank}>Rank</th>
+                  <th className={styles.videoTitle}>Title</th>
+                  <th className={styles.midThumb}>Thumbnail</th>
+                  <th className={styles.videoViews}>Views</th>
+                  <th className={styles.videoLikes}>Likes</th>
+                  <th className={styles.videoComments}>Comment</th>
+                  <th className={styles.videoDate}>Uploaded on</th>
+                  <th className={styles.estimation}>*Estimated Earning</th>
+                </tr>
+              </thead>
+              <tbody>
+                {videos.map((video, index) => (
+                  <tr className={styles.tableBody} key={index}>
+                    <td className={styles.rank}>{index + 1}</td>
+                    <td className={styles.videoTitle}>{video.title}</td>
+
+                    <td className={styles.midThumb}>
+                      <img
+                        width="130px"
+                        height="73.3px"
+                        src={video.imgUrl}
+                        className={styles.midThumb}
+                      />
+                    </td>
+                    <td className={styles.videoViews}>{video.views}</td>
+                    <td className={styles.videoLikes}>{video.likes}</td>
+                    <td className={styles.videoComments}>{video.comments}</td>
+                    <td className={styles.videoDate}>{video.date}</td>
+                    <td className={styles.estimation}>
+                      ₹{video.earnings.toLocaleString("en-IN")}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
