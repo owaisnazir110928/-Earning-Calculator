@@ -17,7 +17,7 @@ function App() {
   };
   return (
     <>
-      {popUp && <CallBackPopUp onClosePopup={closePopup}/>}
+      {popUp && <CallBackPopUp onClosePopup={closePopup} />}
       <Navbar onPopUp={handlePopup} />
       <Routes>
         <Route path="/earning/:url" element={<Earning />} />

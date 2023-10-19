@@ -18,6 +18,8 @@ const Earning = () => {
   const [loading, setLoading] = useState(0);
   const [title, setTitle] = useState("");
   const [date, setDate] = useState(new Date());
+  const [videos, setVideos] = useState([]);
+  const [channelId, setChannelId] = useState("");
 
   const fetchVideoStatistics = async () => {
     try {
@@ -32,6 +34,7 @@ const Earning = () => {
         const utcDate = new Date(data.items[0].snippet.publishedAt);
         var options = { year: "numeric", month: "short", day: "numeric" };
         setDate(utcDate.toLocaleDateString("en-US", options));
+        setChannelId(data.items[0].snippet.channelId); // Set the channelId here
         return {
           viewCount: videoStats.viewCount,
           likeCount: videoStats.likeCount,
@@ -45,6 +48,14 @@ const Earning = () => {
       throw new Error("Error fetching video details");
     }
   };
+
+  async function fetchVideoStatisticsPopular(videoId) {
+    const response = await fetch(
+      `https://www.googleapis.com/youtube/v3/videos?key=${API_KEY}&id=${videoId}&part=statistics`
+    );
+    const data = await response.json();
+    return data.items[0].statistics;
+  }
 
   const fetchSubscriberCount = async (channelId) => {
     try {
@@ -65,6 +76,34 @@ const Earning = () => {
     }
   };
 
+  async function fetchPopularVideos() {
+    const response = await fetch(
+      `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${channelId}&part=snippet,id&order=viewCount&maxResults=10`
+    );
+    const data = await response.json();
+
+    const videoPromises = data.items.map(async (video) => {
+      const videoId = video.id.videoId;
+      const statistics = await fetchVideoStatisticsPopular(videoId);
+      return {
+        title: video.snippet.title,
+        views: statistics.viewCount,
+        likes: statistics.likeCount,
+        dislikes: statistics.dislikeCount,
+        comments: statistics.commentCount,
+        earnings:
+          Math.min(statistics.viewCount) +
+          10 * statistics.commentCount +
+          5 * statistics.likeCount,
+      };
+    });
+
+    const videosData = await Promise.all(videoPromises);
+
+    const sortedVideos = videosData.sort((a, b) => b.earnings - a.earnings);
+
+    return sortedVideos;
+  }
   useEffect(() => {
     console.log(url);
     const fetchData = async () => {
@@ -93,7 +132,19 @@ const Earning = () => {
     };
 
     fetchData();
-  }, []);
+  }, [url, channelId]);
+
+  useEffect(() => {
+    async function fetchVideosData() {
+      if (channelId) {
+        const videoData = await fetchPopularVideos();
+        setVideos(videoData);
+      }
+    }
+
+    fetchVideosData();
+  }, [channelId]);
+
   if (loading < 100) {
     return (
       <center>
@@ -135,6 +186,22 @@ const Earning = () => {
       </div>
       <div className={styles.belowPart}>
         <h3>Other Videos Potentials</h3>
+      </div>
+      <h1>Popular Videos and Statistics</h1>
+      <div className="videos-container">
+        {videos.map((video, index) => (
+          <div key={index} className="video-card">
+            <h2>{video.title}</h2>
+            <p>Views: {video.views}</p>
+            <p>Likes: {video.likes}</p>
+            <p>Dislikes: {video.dislikes}</p>
+            <p>Comments: {video.comments}</p>
+            <p>
+              Earning:{" "}
+              {Math.min(video.views) + 10 * video.comments + 5 * video.likes}
+            </p>
+          </div>
+        ))}
       </div>
     </div>
   );
