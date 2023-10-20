@@ -24,7 +24,7 @@ app.post("/send-email", (req, res) => {
 
   const mailOptions = {
     from: "owaisnazir201@gmail.com",
-    to: "ravi@anchors.in",
+    to: "owaisnazir201@gmail.com",
     subject: "New Callback Request",
     html: `<p><strong>Dear Team,</strong></p>
     <p>A new callback request has been submitted through our website. Below are the details:</p>
