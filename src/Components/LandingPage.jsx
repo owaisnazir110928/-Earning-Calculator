@@ -29,7 +29,6 @@ function LandingPage(props) {
 
   return (
     <div className={styles.container}>
-      {console.log(import.meta.env.VITE_YOUTUBE_API)}
       <div className={styles.heading}>Discover your earning potential</div>
       <div className={styles.subHeading}>
         Turn your Youtube expertise into a lucrative income through resource

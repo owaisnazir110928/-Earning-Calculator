@@ -22,6 +22,8 @@ const Earning = () => {
   const [videos, setVideos] = useState([]);
   const [error, setError] = useState(null);
 
+  const API_KEY = import.meta.env.VITE_YOUTUBE_API;
+
   const fetchVideoStatistics = async () => {
     try {
       const response = await fetch(
