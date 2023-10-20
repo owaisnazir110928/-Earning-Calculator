@@ -116,3 +116,11 @@
     color: #FF0000;
     background-color: #282828;
 }
+.center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.customCircles{
+    background-color: #282828 !important;
+}

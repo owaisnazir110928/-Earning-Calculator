@@ -3,6 +3,7 @@ import styles from "./Style/CallBackPopUp.module.css";
 import tick from "../assets/tick.svg";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { CirclesWithBar } from "react-loader-spinner";
 
 function CallBackPopUp(props) {
   const [sent, setSent] = useState(false);
@@ -12,6 +13,7 @@ function CallBackPopUp(props) {
     time: "",
   });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handlePopupClick = (event) => {
     event.stopPropagation();
@@ -25,9 +27,9 @@ function CallBackPopUp(props) {
     });
   };
 
-  const handleClick = async(event) => {
+  const handleClick = async (event) => {
     event.preventDefault();
-    // Check if name, number, and time are provided
+    setLoading(true);
     if (
       formData.name.trim() === "" ||
       formData.number.trim() === "" ||
@@ -35,9 +37,10 @@ function CallBackPopUp(props) {
     ) {
       setError("Name, Mobile Number, and Preferred Time are required fields.");
     } else {
-      setError(""); 
+      setError("");
       try {
-        await axios.post("http://localhost:3001/send-email", formData); // Send form data to the server
+        await axios.post("http://localhost:3001/send-email", formData);
+        setLoading(false);
         setSent(true);
       } catch (error) {
         console.error(error);
@@ -45,6 +48,7 @@ function CallBackPopUp(props) {
       }
       setError("");
       setSent(true);
+      setLoading(false);
     }
   };
 
@@ -56,7 +60,7 @@ function CallBackPopUp(props) {
 
   return (
     <div className={styles.container} onClick={onClosePopup}>
-      {!sent && (
+      {!sent && !loading && (
         <div className={styles.popup} onClick={handlePopupClick}>
           <form className={styles.box}>
             <h3>Request a call back</h3>
@@ -92,7 +96,7 @@ function CallBackPopUp(props) {
         </div>
       )}
 
-      {sent && (
+      {sent && !loading && (
         <div className={styles.popup} onClick={handlePopupClick}>
           <img className={styles.tick} src={tick} alt="tick" />
           <h2>Request a call back</h2>
@@ -101,6 +105,24 @@ function CallBackPopUp(props) {
           <Link to="/" className={styles.redButton} onClick={handleRedClick}>
             Check another video
           </Link>
+        </div>
+      )}
+
+      {!sent && loading && (
+        <div className={styles.popup}>
+          <div className={styles.center}>
+            {" "}
+            <CirclesWithBar
+              height="100"
+              width="100"
+              color="#4fa94d"
+              visible={true}
+              outerCircleColor=""
+              innerCircleColor=""
+              barColor=""
+              ariaLabel="circles-with-bar-loading"
+            />
+          </div>
         </div>
       )}
     </div>

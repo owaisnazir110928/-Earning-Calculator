@@ -4,6 +4,7 @@ import viewSvg from "../assets/views.svg";
 import likeSvg from "../assets/likes.svg";
 import commentSvg from "../assets/comments.svg";
 import { useParams } from "react-router-dom";
+import { CirclesWithBar } from "react-loader-spinner";
 
 const API_KEY = "AIzaSyAwWGDBtulgkwYaUZqXM4puMowDbDacWuY";
 const Earning = () => {
@@ -146,8 +147,19 @@ const Earning = () => {
 
   if (loading < 100) {
     return (
-      <center>
-        <h2>Loading... {loading}</h2>
+      <center className={styles.center}>
+        <CirclesWithBar
+          height="100"
+          width="100"
+          color="#4fa94d"
+          wrapperStyle={{}}
+          wrapperClass=""
+          visible={true}
+          outerCircleColor=""
+          innerCircleColor=""
+          barColor=""
+          ariaLabel="circles-with-bar-loading"
+        />
       </center>
     );
   }
