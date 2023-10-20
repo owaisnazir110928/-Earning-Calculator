@@ -1,8 +1,8 @@
 import express from "express";
 import { json } from "express";
 import { createTransport } from "nodemailer";
-import cors from "cors"; 
-import { config } from 'dotenv';
+import cors from "cors";
+import { config } from "dotenv";
 
 config();
 const app = express();
@@ -20,13 +20,13 @@ app.post("/send-email", (req, res) => {
     service: "gmail",
     auth: {
       user: "owaisnazir201@gmail.com",
-      pass: process.env.PASS,
+      pass: `${process.env.PASS}`,
     },
   });
 
   const mailOptions = {
     from: "owaisnazir201@gmail.com",
-    to: "owaisnazir201@gmail.com",
+    to: "owaisnazir110928@gmail.com",
     subject: "New Callback Request",
     html: `<p><strong>Dear Team,</strong></p>
     <p>A new callback request has been submitted through our website. Below are the details:</p>
