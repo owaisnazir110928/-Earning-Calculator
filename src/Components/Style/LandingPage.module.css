@@ -84,13 +84,13 @@
 }
 
 .errorOutline {
-    outline: 2px solid #FF0000;
+    border: 1px solid #FF0000;
 }
 
 .error {
-    position: relative;
-    top: 0;
-    left: 0;
+    position: absolute;
+    top: -20px;
+    left: 20px;
     font-size: 14px;
     color: #FF0000;
 }

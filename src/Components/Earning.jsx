@@ -20,6 +20,7 @@ const Earning = () => {
     date: new Date(),
   });
   const [videos, setVideos] = useState([]);
+  const [error, setError] = useState(null);
 
   const fetchVideoStatistics = async () => {
     try {
@@ -53,12 +54,15 @@ const Earning = () => {
 
         fetchSubscriberCount(channelId);
         fetchPopularVideos(channelId);
+      } else if (response.status === 403) {
+        throw new Error("API Limit Exceeded. Please try again later.");
       } else {
         throw new Error("Error fetching video details");
       }
     } catch (error) {
       console.error("Error fetching video details:", error);
       setLoading(100);
+      setError(error.message);
     }
   };
 
@@ -145,6 +149,15 @@ const Earning = () => {
       <center>
         <h2>Loading... {loading}</h2>
       </center>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className={styles.container}>
+        <h2>An error occurred:</h2>
+        <p>{error}</p>
+      </div>
     );
   }
 
