@@ -78,3 +78,19 @@
     color: #FFFFFF;
     cursor: pointer;
 }
+
+.errorLabel {
+    position: relative;
+}
+
+.errorOutline {
+    outline: 2px solid #FF0000;
+}
+
+.error {
+    position: relative;
+    top: 0;
+    left: 0;
+    font-size: 14px;
+    color: #FF0000;
+}

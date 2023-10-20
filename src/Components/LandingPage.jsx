@@ -5,6 +5,8 @@ import youtube from "../assets/youtube.svg";
 
 function LandingPage(props) {
   const [url, setUrl] = useState("");
+  const [error, setError] = useState(""); // State for error message
+  const [isErrorVisible, setIsErrorVisible] = useState(false); // State for error visibility
   const navigate = useNavigate();
 
   function extractVideoId(url) {
@@ -17,8 +19,11 @@ function LandingPage(props) {
     const videoId = extractVideoId(url);
     if (videoId) {
       navigate(`/earning/${videoId}`);
+      setError(""); // Clear any previous error messages
+      setIsErrorVisible(false); // Hide error message
     } else {
-      console.error("Invalid YouTube URL");
+      setError("Invalid YouTube URL. Please enter a valid YouTube video link.");
+      setIsErrorVisible(true); // Show error message
     }
   }
 
@@ -30,17 +35,22 @@ function LandingPage(props) {
         sharing
       </div>
       <div className={styles.inputContainer}>
-        <div>
+        <div className={isErrorVisible ? styles.errorLabel : ""}>
           <img className={styles.icon} src={youtube} alt="yt-icon" />
           <input
             type="url"
             placeholder="enter youtube video link"
-            className={styles.input}
+            className={`${styles.input} ${
+              isErrorVisible ? styles.errorOutline : ""
+            }`}
             value={url}
             onChange={(e) => {
               setUrl(e.target.value);
+              setError(""); // Clear error when user starts typing again
+              setIsErrorVisible(false); // Hide error message when user starts typing again
             }}
           />
+          {isErrorVisible && <div className={styles.error}>{error}</div>}
         </div>
         <div>
           <button
