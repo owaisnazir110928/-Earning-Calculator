@@ -35,7 +35,7 @@ function CallBackPopUp(props) {
     ) {
       setError("Name, Mobile Number, and Preferred Time are required fields.");
     } else {
-      setError(""); 
+      setError("");
       setSent(true);
     }
   };
