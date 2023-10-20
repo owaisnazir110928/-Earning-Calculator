@@ -6,7 +6,6 @@ import commentSvg from "../assets/comments.svg";
 import { useParams } from "react-router-dom";
 import { CirclesWithBar } from "react-loader-spinner";
 
-const API_KEY = "AIzaSyAwWGDBtulgkwYaUZqXM4puMowDbDacWuY";
 const Earning = () => {
   const { url } = useParams();
   const [loading, setLoading] = useState(0);
