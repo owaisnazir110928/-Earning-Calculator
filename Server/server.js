@@ -2,6 +2,7 @@ import express from "express";
 import { json } from "express";
 import { createTransport } from "nodemailer";
 import cors from "cors"; 
+require('dotenv').config(); 
 
 const app = express();
 const PORT = 3001;
