@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styles from "./Style/CallBackPopUp.module.css";
 import tick from "../assets/tick.svg";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 function CallBackPopUp(props) {
   const [sent, setSent] = useState(false);
@@ -24,9 +25,8 @@ function CallBackPopUp(props) {
     });
   };
 
-  const handleClick = (event) => {
+  const handleClick = async(event) => {
     event.preventDefault();
-    console.log(formData);
     // Check if name, number, and time are provided
     if (
       formData.name.trim() === "" ||
@@ -35,6 +35,14 @@ function CallBackPopUp(props) {
     ) {
       setError("Name, Mobile Number, and Preferred Time are required fields.");
     } else {
+      setError(""); 
+      try {
+        await axios.post("http://localhost:3001/send-email", formData); // Send form data to the server
+        setSent(true);
+      } catch (error) {
+        console.error(error);
+        setError("Failed to send email. Please try again later.");
+      }
       setError("");
       setSent(true);
     }
