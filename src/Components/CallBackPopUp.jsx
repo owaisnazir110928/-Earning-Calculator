@@ -39,7 +39,7 @@ function CallBackPopUp(props) {
     } else {
       setError("");
       try {
-        await axios.post("http://localhost:3001/send-email", formData);
+        await axios.post("https://earningcalc.onrender.com/send-email", formData);
         setLoading(false);
         setSent(true);
       } catch (error) {
